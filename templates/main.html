@@ -31,6 +31,7 @@
 <div class="jumbotron">
     <div class="container">
         <div style="text-align: center">
+            <h1>Welcome to</h1>
             <h1>Charm Player</h1>
         </div>
     </div>
@@ -40,11 +41,14 @@
     <div style="text-align: center" class="col-md-offset-5">
         <div class="col-lg-3">
             <div class="well">
-                <form class="form" role="form" enctype="multipart/form-data" action="player" method="post">
+                <form class="form" role="form" method="post">
                     <div class="form-group">
-                        <input name="file" type="file" class="form-control">
+                        <input name="login" type="text" placeholder="Login" class="form-control">
                     </div>
-                    <input type="submit" class="btn btn-success">
+                    <div class="form-group">
+                        <input name="password" type="password" placeholder="Password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
                 </form>
             </div>
         </div>
