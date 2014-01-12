@@ -3,6 +3,7 @@
 
 """
 import os
+
 from flask import Flask, redirect
 from flask.globals import request, session
 from flask.templating import render_template
@@ -17,12 +18,11 @@ clementine = Clementine()
 
 # Params
 MUSIC_FOLDER = '/tmp/playcharm'
-USERS = {'ivan': '12378'}
+USERS = {'ivan': '12378', 'stasx': '12351'}
 
 
 def auth(login):
     session['login'] = login
-    return
 
 
 def check_auth():
@@ -41,6 +41,25 @@ def main():
     return render_template('main.html')
 
 
+@app.route("/play", methods=['POST'])
+def play():
+    clementine.play()
+    return ''
+
+
+@app.route('/playnum/<num>', methods=['POST'])
+def play_num():
+    print num
+    clementine.play_num(num)
+    return ''
+
+
+@app.route("/pause", methods=['POST'])
+def pause():
+    clementine.pause()
+    return ''
+
+
 @app.route("/player", methods=['POST', 'GET'])
 def player():
     if not check_auth():
@@ -52,8 +71,9 @@ def player():
             filename = req_file.filename
             req_file.save(os.path.join(MUSIC_FOLDER, filename))
             clementine.add_track('file:/' + MUSIC_FOLDER + '/' + filename, True)
+            clementine.play()
             return redirect('player')
-    return render_template('player.html')
+    return render_template('player.html', tracks=clementine.get_track_list(), current_num=clementine.get_current_track_num())
 
 if __name__ == "__main__":
     app.debug = True

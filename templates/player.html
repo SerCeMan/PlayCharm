@@ -11,6 +11,10 @@
             padding-top: 50px;
             padding-bottom: 20px;
         }
+        li {
+            cursor: pointer;
+            cursor: hand;
+        }
     </style>
 </head>
 <body>
@@ -37,8 +41,8 @@
 </div>
 
 <div class="row">
-    <div style="text-align: center" class="col-md-offset-5">
-        <div class="col-lg-3">
+    <div style="text-align: center" class="col-md-offset-4">
+        <div class="col-lg-6">
             <div class="well">
                 <form class="form" role="form" enctype="multipart/form-data" action="player" method="post">
                     <div class="form-group">
@@ -46,6 +50,25 @@
                     </div>
                     <input type="submit" class="btn btn-success">
                 </form>
+            </div>
+            <div class="well">
+                <div class="row" style="text-align: left">
+                    <ul>
+                        {% for track in tracks %}
+                            <li onclick="$.post('/playnum/{{track.num}}')">
+                                {% if current_num == track.num %}
+                                    <b>
+                                {% endif %}
+                                {{ track.num }}  {{ track.title }}
+                                {% if current_num == track.num %}
+                                    </b>
+                                {% endif %}
+                            </li>
+                        {%- endfor  %}
+                    </ul>
+                </div>
+                <input type="button" class="btn-success" onclick="$.post('/play')" value="Play"/>
+                <input type="button" class="btn-success" onclick="$.post('/pause')" value="Pause"/>
             </div>
         </div>
     </div>
