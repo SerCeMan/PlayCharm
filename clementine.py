@@ -20,6 +20,15 @@ class Clementine:
     def pause(self):
         self.player.Pause()
 
+    def volume_up(self, value):
+        self.player.VolumeUp(int(value))
+
+    def volume_down(self, value):
+        self.player.VolumeDown(int(value))
+
+    def get_volume(self):
+        return str(self.player.VolumeGet())
+
     def get_track_list(self):
         tracks = []
         length = int(self.track_list.GetLength())
@@ -29,7 +38,7 @@ class Clementine:
         return tracks
 
     def get_current_track_num(self):
-        return self.track_list.GetCurrentTrack()
+        return int(self.track_list.GetCurrentTrack())
 
     @staticmethod
     def track_from_metadata(metadata, num):

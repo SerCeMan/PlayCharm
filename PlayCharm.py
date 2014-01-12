@@ -47,9 +47,8 @@ def play():
     return ''
 
 
-@app.route('/playnum/<num>', methods=['POST'])
-def play_num():
-    print num
+@app.route('/playnum/<int:num>', methods=['POST'])
+def play_num(num):
     clementine.play_num(num)
     return ''
 
@@ -60,20 +59,35 @@ def pause():
     return ''
 
 
+@app.route("/volume-up/<value>", methods=['POST'])
+def volume_up(value):
+    clementine.volume_up(value)
+    return clementine.get_volume()
+
+
+@app.route("/volume-down/<value>", methods=['POST'])
+def volume_down(value):
+    clementine.volume_down(value)
+    return clementine.get_volume()
+
+
 @app.route("/player", methods=['POST', 'GET'])
 def player():
     if not check_auth():
         return redirect('/')
 
     if request.method == 'POST':
-        req_file = request.files['file']
-        if req_file:
-            filename = req_file.filename
-            req_file.save(os.path.join(MUSIC_FOLDER, filename))
-            clementine.add_track('file:/' + MUSIC_FOLDER + '/' + filename, True)
-            clementine.play()
-            return redirect('player')
-    return render_template('player.html', tracks=clementine.get_track_list(), current_num=clementine.get_current_track_num())
+        #req_file = request.files['file']
+        req_files = request.files.getlist("files")
+        if req_files:
+            for req_file in req_files:
+                filename = req_file.filename
+                req_file.save(os.path.join(MUSIC_FOLDER, filename))
+                clementine.add_track('file:/' + MUSIC_FOLDER + '/' + filename, False)
+        return redirect('player')
+    return render_template('player.html', tracks=clementine.get_track_list(),
+                           current_num=clementine.get_current_track_num(),
+                           volume=clementine.get_volume())
 
 if __name__ == "__main__":
     app.debug = True

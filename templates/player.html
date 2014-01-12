@@ -4,7 +4,7 @@
     <title>Charm player</title>
     <meta charset="utf-8">
     <script type="application/javascript" src="/static/bootstrap.js"></script>
-    <script type="application/javascript" src="/static/jquery-2.0.3.min.js"></script>
+    <script type="application/javascript" src="/static/jquery-1.10.2.min.js"></script>
     <link href="/static/bootstrap.css" rel="stylesheet"/>
     <style>
         body {
@@ -46,7 +46,7 @@
             <div class="well">
                 <form class="form" role="form" enctype="multipart/form-data" action="player" method="post">
                     <div class="form-group">
-                        <input name="file" type="file" class="form-control">
+                        <input name="files" type="file" class="form-control" multiple="">
                     </div>
                     <input type="submit" class="btn btn-success">
                 </form>
@@ -67,8 +67,13 @@
                         {%- endfor  %}
                     </ul>
                 </div>
-                <input type="button" class="btn-success" onclick="$.post('/play')" value="Play"/>
-                <input type="button" class="btn-success" onclick="$.post('/pause')" value="Pause"/>
+                <input type="button" class="btn btn-success" onclick="$.post('/play')" value="Play"/>
+                <input type="button" class="btn btn-success" onclick="$.post('/pause')" value="Pause"/>
+                <div class="row">
+                    <input type="button" class="btn btn-success" onclick="$.post('/volume-up/10', function(data) {$('#volume_span').text('Current: ' + data)})" value="Volume Up"/>
+                    <input type="button" class="btn btn-success" onclick="$.post('/volume-down/10', function(data) {$('#volume_span').text('Current: ' + data)})" value="Volume Down"/>
+                    <span id="volume_span">Current: {{volume}}</span>
+                </div>
             </div>
         </div>
     </div>
